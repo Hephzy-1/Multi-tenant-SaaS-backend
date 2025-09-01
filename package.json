@@ -1,0 +1,22 @@
+{
+  "name": "multi-tenant",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Hephzibah Owoeye",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "joi": "^18.0.1",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.18.0"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.19",
+    "@types/node": "^24.3.0"
+  }
+}
