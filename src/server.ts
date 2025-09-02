@@ -1,10 +1,12 @@
-import app from './app.ts';
+import app from './app';
 import { createServer } from 'http';
-import connectDB from './config/db.ts';
+import connectDB from './config/db';
 
 const PORT = process.env.PORT || 3000;
 
 const server = createServer(app);
+
+// Connect database
 connectDB();
 
 server.listen(PORT, () => {
