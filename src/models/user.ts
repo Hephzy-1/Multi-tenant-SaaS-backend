@@ -9,16 +9,19 @@ export interface IUser extends Document {
   picture?: string,
   otp?: string,
   otpExpiry?: Date,
+  isVerified: boolean
 }
 
 const userSchema = new Schema<IUser>({
   name: { type: String, required: true },
   email: { type: String, required: true, unique: true },
   phone: { type: String, required: true },
-  role: { type: String, required: true, enum: ['admin', 'landlord', 'tenant'], default: 'tenant' },
+  role: { type: String, required: true, enum: ['admin', 'tenant'], default: 'tenant' },
   password: { type: String, required: function() {} },
   otp: String,  
-  otpExpiry: Date
+  otpExpiry: Date,
+  isVerified: { type: Boolean, default: false },
+  picture: String
 }, { 
   timestamps: true,
   toJSON: {

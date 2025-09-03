@@ -3,6 +3,7 @@ import cors from 'cors';
 import { ErrorResponse } from './utils/ErrorResponse';
 import errorHandler from './middleware/errorHandler';
 import asyncHandler from './middleware/async';
+import { AppResponse } from './utils/AppResponse';
 
 const app = express();
 
@@ -10,7 +11,7 @@ app.use(express.json());
 app.use(cors());
 
 app.get('/', asyncHandler(async (req: express.Request, res: express.Response) => {
-  res.status(200).json({ message: 'Welcome!' });
+  return AppResponse(res, 200, null, 'Welcome...');
 }));
 
 // Catch all undefined routes
