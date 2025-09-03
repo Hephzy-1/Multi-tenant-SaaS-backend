@@ -7,3 +7,13 @@ export const register = Joi.object({
   role: Joi.string().valid('admin', 'tenant').required(),
   password: Joi.string().min(6).required(),
 });
+
+export const login = Joi.object({
+  email: Joi.string().email().required(),
+  password: Joi.string().required()
+});
+
+export const verifyOTP = Joi.object({
+  email: Joi.string().email().required(),
+  otp: Joi.string().length(6).required()
+});
