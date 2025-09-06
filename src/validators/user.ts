@@ -17,3 +17,7 @@ export const verifyOTP = Joi.object({
   email: Joi.string().email().required(),
   otp: Joi.string().length(6).required()
 });
+
+export const forgetPass = Joi.object({
+  email: Joi.string().email().required()
+});

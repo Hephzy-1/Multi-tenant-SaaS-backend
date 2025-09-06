@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import env from './env.ts';
+import env from './env';
 
 if (!env.DB_URI) {
   throw Error('DB_URI is not defined in environment variables');

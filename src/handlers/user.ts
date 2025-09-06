@@ -3,7 +3,9 @@ import { UserUsecase } from "../usecase/User";
 import { AppResponse } from "../utils/AppResponse";
 import { ErrorResponse } from "../utils/ErrorResponse";
 import { comparePassword } from "../utils/hash";
-import { login, register } from "../validators/user";
+import { forgetPass, login, register } from "../validators/user";
+import { generateToken } from "../utils/jwt";
+import crypto from 'crypto';
 
 export const registerUser = asyncHandler(async (req, res, next) => {
   const { error, value } = register.validate(req.body);
@@ -21,7 +23,9 @@ export const registerUser = asyncHandler(async (req, res, next) => {
 
   const newUser = await UserUsecase.registerUser(value);
 
-  return AppResponse(res, 201, { user: newUser.user, OTP: newUser.OTP }, 'User registered successfully');
+  const token = await generateToken(newUser.user.id, email, role)
+
+  return AppResponse(res, 201, { user: newUser.user, OTP: newUser.OTP, token }, 'User registered successfully');
 });
 
 export const loginUser = asyncHandler(async (req, res, next) => {
@@ -44,5 +48,20 @@ export const loginUser = asyncHandler(async (req, res, next) => {
     throw next(new ErrorResponse("Invalid credentials", 401));
   }
 
-  return AppResponse(res, 200, { user: userExists }, 'User logged in successfully');
+  const token = await generateToken(userExists.id, userExists.email, userExists.role)
+
+  return AppResponse(res, 200, { user: userExists, token }, 'User logged in successfully');
+});
+
+export const forgetPassword = asyncHandler(async (req, res, next) => {
+  const { error, value } = forgetPass.validate(req.body);
+
+  if (error) throw next(new ErrorResponse(error.details[0].message, 400));
+
+  const userExists = await UserUsecase.getUserByEmail(value);
+
+  if (!userExists) throw next(new ErrorResponse(`Email doesn't exist in our database`, 401));
+
+  const OTP = Array(6).fill(0).map(() => Math.floor(Math.random() * 10)).join('');
+  const OTPHash = crypto.createHash('sha256').update(OTP).digest('hex')
 })
